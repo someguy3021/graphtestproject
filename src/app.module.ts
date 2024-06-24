@@ -7,6 +7,8 @@ import { TodosModule } from './todos/todos.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './todos/entities/todo.entity';
+import { BullModule } from '@nestjs/bull';
+import { ModerationModule } from './moderation/moderation.module';
 
 
 @Module({
@@ -23,6 +25,12 @@ import { Todo } from './todos/entities/todo.entity';
       database: process.env.DB_DBNAME,
       entities: [Todo],
       synchronize: true,
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
